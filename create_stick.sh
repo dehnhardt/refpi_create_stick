@@ -38,8 +38,8 @@ p # primary partition
 # default, start immediately after preceding partition
 # default, extend partition to end of disk
 t # change the partition type 
-2 # partition 2
-c # use fat32
+# 2 # partition 2
+# c # use fat32
 p # print the in-memory partition table
 w # write the partition table
 q # and we're done
@@ -50,8 +50,9 @@ mkfs.ext4 ${1}1
 sudo tune2fs -L Login ${1}1
 
 echo "Create filesysten FAT32 on ${1}2"
-mkfs.vfat ${1}2
-mlabel -i ${1}2 ::Home
+mkfs.ext4 ${1}2
+sudo tune2fs -L Home ${1}1
+#mlabel -i ${1}2 ::Home
 
 if [ ! -d /tmp/home ]
 then
