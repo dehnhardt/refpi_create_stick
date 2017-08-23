@@ -37,7 +37,7 @@ p # primary partition
 # partion number 2
 # default, start immediately after preceding partition
 # default, extend partition to end of disk
-t # change the partition type 
+# t # change the partition type 
 # 2 # partition 2
 # c # use fat32
 p # print the in-memory partition table
@@ -49,9 +49,10 @@ echo "Create filesystem ext4 on ${1}1"
 mkfs.ext4 ${1}1
 sudo tune2fs -L Login ${1}1
 
-echo "Create filesysten FAT32 on ${1}2"
+echo "Create filesysten ext4 on ${1}2"
 mkfs.ext4 ${1}2
-sudo tune2fs -L Home ${1}1
+sudo tune2fs -L Home ${1}2
+
 #mlabel -i ${1}2 ::Home
 
 if [ ! -d /tmp/home ]
@@ -87,7 +88,14 @@ useradd -b /tmp/home/ -m -g 100 $USER
 
 if [ $? ]
 then
-	passwd $USER
+	while true; 
+	do
+		passwd $USER
+		if [ $? ]
+		then
+			break;
+		fi
+	done
 else
 	echo "There was an error while creating the user"
 fi
